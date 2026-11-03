@@ -1,1 +1,1 @@
-Official Solstice Math Olympiads website
+Legacy Solstice Math Olympiads website
