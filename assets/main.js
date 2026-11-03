@@ -1,8 +1,19 @@
+const SITE_ROOT = new URL("..", document.currentScript.src);
+const fromRoot = p => new URL(p, SITE_ROOT).href;
+function fixLinks(container) {
+  container.querySelectorAll("a[href], img[src]").forEach(el => {
+    const attr = el.hasAttribute("href") ? "href" : "src";
+    const v = el.getAttribute(attr);
+    if (!/^(https?:|mailto:|tel:|#|\/\/)/.test(v)) el.setAttribute(attr, fromRoot(v));
+  });
+}
+
 /* ==== HEADER ==== */
-fetch("/assets/includes/header.html")
+fetch(fromRoot("assets/includes/header.html"))
   .then(response => response.text())
   .then(html => {
     document.getElementById("header-container").innerHTML = html;
+    fixLinks(document.getElementById("header-container"));
     const header = document.querySelector('.header');
     window.addEventListener('scroll', () => {
       header.classList.toggle('scrolled', window.scrollY > 10);
@@ -10,10 +21,11 @@ fetch("/assets/includes/header.html")
   });
 
 /* ==== FOOTER ==== */
-fetch("/assets/includes/footer.html")
+fetch(fromRoot("assets/includes/footer.html"))
   .then(response => response.text())
   .then(html => {
     document.getElementById("footer-container").innerHTML = html;
+    fixLinks(document.getElementById("footer-container"));
   });
 
 /* ==== FAQ ==== */
